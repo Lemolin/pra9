@@ -29,6 +29,7 @@ bool DocumentManager::borrowDocument(int docid, int patronID) {
 			if (it->first==docid) {
 				if (it->second.borrowed_times < it->second.license_limit) {
 					it->second.borrowed_times++;
+					docValid = true;
 					it->second.borrow_patron_ID.push_back(patronID);
 
 				}
