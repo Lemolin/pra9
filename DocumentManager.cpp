@@ -1,11 +1,12 @@
 #include"DocumentManager.h"
 
 void DocumentManager::addDocument(string name, int id, int license_limit) {
+		Document* d = new Document();
 		d->name = name;
 		d->id = id;
 		d->license_limit = license_limit;
 		d->borrowed_times = 0;
-		doc.push_back(d);
+		doc[id] = *d;
 }
 
 void DocumentManager::addPatron(int patronID) {
@@ -13,9 +14,9 @@ void DocumentManager::addPatron(int patronID) {
 }
 
 int DocumentManager::search(string name) {
-	for (vector<Document*>::iterator it = doc.begin(); it != doc.end(); it++) {
-			if ((*it)->name == name) {
-				return (*it)->id;
+	for (auto it = doc.begin(); it != doc.end(); ++it) {
+			if (it->second.name == name) {
+				return it->first;
 			}
 		}
 		return 0;
@@ -24,12 +25,12 @@ int DocumentManager::search(string name) {
 bool DocumentManager::borrowDocument(int docid, int patronID) {
 	bool docValid = false;
 		bool validId = false;
-		for (vector<Document*>::iterator it = doc.begin(); it != doc.end(); it++) {
-			if ((*it)->id == docid) {
-				if ((*it)->borrowed_times < (*it)->license_limit) {
-					(*it)->borrowed_times++;
-					(*it)->borrow_patron_ID.push_back(patronID);
-					docValid = true;
+		for (auto it = doc.begin(); it != doc.end(); ++it) {
+			if (it->first==docid) {
+				if (it->second.borrowed_times < it->second.license_limit) {
+					it->second.borrowed_times++;
+					it->second.borrow_patron_ID.push_back(patronID);
+
 				}
 			}
 		}
@@ -48,10 +49,10 @@ bool DocumentManager::borrowDocument(int docid, int patronID) {
 }
 
 void DocumentManager::returnDocument(int docid, int patronID) {
-	for (vector<Document*>::iterator it = doc.begin(); it != doc.end(); it++) {
-			if ((*it)->id == docid) {
-				(*it)->borrowed_times--;
-				auto iter = remove((*it)->borrow_patron_ID.begin(), (*it)->borrow_patron_ID.end(), patronID);
+	for (auto it = doc.begin(); it != doc.end(); ++it) {
+			if (it->first == docid) {
+				it->second.borrowed_times--;
+				auto iter = remove(it->second.borrow_patron_ID.begin(), it->second.borrow_patron_ID.end(), patronID);
 			}
 		}
 
