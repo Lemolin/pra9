@@ -5,7 +5,7 @@
 
 class DocumentManager {
 private:
-	vector<Document>doc;
+	vector<Document*>doc;
 	vector<int>patron;
 	Document* d;
 
