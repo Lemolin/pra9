@@ -1,13 +1,14 @@
 #ifndef DOCUMENTMANAGER_H
 #define DOCUMENTMANAGER_H
+#include<unordered_map>
 
 #include"Document.h"
 
 class DocumentManager {
 private:
-	vector<Document*>doc;
+	unordered_map<int, Document> doc;
 	vector<int>patron;
-	Document* d;
+
 
 public:
 	void addDocument(string name, int id, int license_limit);
